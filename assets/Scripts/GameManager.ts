@@ -7,12 +7,23 @@ const { ccclass } = _decorator;
 @ccclass('GameManager')
 export class GameManager extends Component {
     private saveManager: SaveManager | null = null;
+    public readonly UPGRADE_COST = 250; 
 
     onLoad() {
         const gameControllerNode = find("GameController");
         if (gameControllerNode) {
             this.saveManager = gameControllerNode.getComponent(SaveManager);
         }
+        
+        this.startPassiveIncomeTimer();
+    }
+
+    private startPassiveIncomeTimer(): void {
+        this.schedule(() => {
+            if (GameData.goldPerSecond > 0) {
+                GameData.gold += GameData.goldPerSecond;
+            }
+        }, 1);
     }
 
     public sellAllHoney(): boolean {
@@ -23,12 +34,25 @@ export class GameManager extends Component {
             GameData.honey = 0;
             GameData.gold += goldEarned;
             
-            console.log(`Продано ${honeyToSell} мёда за ${goldEarned} золота.`);
             this.saveManager?.saveGame();
-            return true; // 
-        } else {
-            console.log("Нет мёда для продажи.");
-            return false; 
+            return true;
+        }
+        return false;
+    }
+
+    public purchaseDapperBeeUpgrade(): void {
+        if (GameData.gold >= this.UPGRADE_COST) {
+            GameData.gold -= this.UPGRADE_COST;
+            GameData.honeyPerClickBonus += 1;
+            this.saveManager?.saveGame();
+        }
+    }
+
+    public purchaseGoldenBeeUpgrade(): void {
+        if (GameData.gold >= this.UPGRADE_COST) {
+            GameData.gold -= this.UPGRADE_COST;
+            GameData.goldPerSecond += 0.5;
+            this.saveManager?.saveGame();
         }
     }
 }
