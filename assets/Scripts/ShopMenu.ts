@@ -1,8 +1,16 @@
-import { _decorator, Component, Node, Label, Button, find } from 'cc';
+import { _decorator, Component, Node, Label, Button, find, Color, Sprite } from 'cc';
 import { GameData } from './GameData';
 import { GameManager } from './GameManager';
 
 const { ccclass, property } = _decorator;
+
+function customPadStart(text: string, targetLength: number, padString: string): string {
+    let result = text;
+    while (result.length < targetLength) {
+        result = padString + result;
+    }
+    return result;
+}
 
 @ccclass('ShopMenu')
 export class ShopMenu extends Component {
@@ -12,6 +20,9 @@ export class ShopMenu extends Component {
     @property({ type: Button }) private goldenBeeButton: Button | null = null;
 
     private gameManager: GameManager | null = null;
+    
+    private readonly COLOR_ACTIVE = new Color(255, 255, 255, 255);
+    private readonly COLOR_INACTIVE = new Color(150, 150, 150, 255);
 
     onLoad() {
         this.gameManager = find("GameController")?.getComponent(GameManager);
@@ -19,22 +30,51 @@ export class ShopMenu extends Component {
     
     update(deltaTime: number) {
         if (this.goldLabel) {
-            this.goldLabel.string = `${Math.floor(GameData.gold).toLocaleString()}`;
+            const goldValue = Math.floor(GameData.gold);
+            const formattedGold = customPadStart(goldValue.toString(), 6, '0');
+            this.goldLabel.string = `GOLD\n${formattedGold}`;
         }
 
         if (this.gameManager) {
             const canAfford = GameData.gold >= this.gameManager.UPGRADE_COST;
-            if (this.dapperBeeButton) this.dapperBeeButton.interactable = canAfford;
-            if (this.goldenBeeButton) this.goldenBeeButton.interactable = canAfford;
+            const targetColor = canAfford ? this.COLOR_ACTIVE : this.COLOR_INACTIVE;
+            
+            if (this.dapperBeeButton) {
+                const backgroundNode = this.dapperBeeButton.node.getChildByName('Background');
+                if (backgroundNode) {
+                    const sprite = backgroundNode.getComponent(Sprite);
+                    if (sprite) {
+                        sprite.color = targetColor;
+                    }
+                }
+            }
+            
+            if (this.goldenBeeButton) {
+                const backgroundNode = this.goldenBeeButton.node.getChildByName('Background');
+                if (backgroundNode) {
+                    const sprite = backgroundNode.getComponent(Sprite);
+                    if (sprite) {
+                        sprite.color = targetColor;
+                    }
+                }
+            }
         }
     }
 
     public onPurchaseDapperBeeClick(): void {
-        this.gameManager?.purchaseDapperBeeUpgrade();
+        if (this.gameManager && GameData.gold >= this.gameManager.UPGRADE_COST) {
+            this.gameManager.purchaseDapperBeeUpgrade();
+        } else {
+            console.log("Недостаточно золота!");
+        }
     }
 
     public onPurchaseGoldenBeeClick(): void {
-        this.gameManager?.purchaseGoldenBeeUpgrade();
+        if (this.gameManager && GameData.gold >= this.gameManager.UPGRADE_COST) {
+            this.gameManager.purchaseGoldenBeeUpgrade();
+        } else {
+            console.log("Недостаточно золота!");
+        }
     }
     
     public onCloseClick(): void {

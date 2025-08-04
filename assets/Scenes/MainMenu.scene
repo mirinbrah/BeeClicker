@@ -485,15 +485,15 @@
       "__expectedType__": "cc.SpriteFrame"
     },
     "_hoverSprite": {
-      "__uuid__": "dd1e77c6-bc1e-457d-a1e7-0e84c6ea160d@f9941",
+      "__uuid__": "1938d5d8-33cb-470b-a8cc-5a6b65958c9e@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_pressedSprite": {
-      "__uuid__": "dd1e77c6-bc1e-457d-a1e7-0e84c6ea160d@f9941",
+      "__uuid__": "1248b050-76d1-41b9-9261-bf76ac4ee452@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_disabledSprite": {
-      "__uuid__": "dd1e77c6-bc1e-457d-a1e7-0e84c6ea160d@f9941",
+      "__uuid__": "1248b050-76d1-41b9-9261-bf76ac4ee452@f9941",
       "__expectedType__": "cc.SpriteFrame"
     },
     "_duration": 0.1,

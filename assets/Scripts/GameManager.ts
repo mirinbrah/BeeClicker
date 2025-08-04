@@ -41,18 +41,14 @@ export class GameManager extends Component {
     }
 
     public purchaseDapperBeeUpgrade(): void {
-        if (GameData.gold >= this.UPGRADE_COST) {
-            GameData.gold -= this.UPGRADE_COST;
-            GameData.honeyPerClickBonus += 1;
-            this.saveManager?.saveGame();
-        }
+        GameData.gold -= this.UPGRADE_COST;
+        GameData.honeyPerClickBonus += 1;
+        this.saveManager?.saveGame();
     }
 
     public purchaseGoldenBeeUpgrade(): void {
-        if (GameData.gold >= this.UPGRADE_COST) {
-            GameData.gold -= this.UPGRADE_COST;
-            GameData.goldPerSecond += 0.5;
-            this.saveManager?.saveGame();
-        }
+        GameData.gold -= this.UPGRADE_COST;
+        GameData.goldPerSecond += 0.5;
+        this.saveManager?.saveGame();
     }
 }

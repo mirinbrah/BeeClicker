@@ -2,7 +2,7 @@ import { _decorator, Component, tween, v3 } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('BeeMenuAnimator')
-export class BeeAnimator extends Component {
+export class BeeMenuAnimator extends Component {
 
     public playJumpAnimation(): void {
         const jumpHeight = 30; 
