@@ -6,7 +6,6 @@ const { ccclass } = _decorator;
 
 @ccclass('GameManager')
 export class GameManager extends Component {
-
     private saveManager: SaveManager | null = null;
 
     onLoad() {
@@ -16,7 +15,7 @@ export class GameManager extends Component {
         }
     }
 
-    public sellAllHoney(): void {
+    public sellAllHoney(): boolean {
         if (GameData.honey > 0) {
             const honeyToSell = Math.floor(GameData.honey);
             const goldEarned = honeyToSell * GameData.honeyToGoldRate;
@@ -26,11 +25,10 @@ export class GameManager extends Component {
             
             console.log(`Продано ${honeyToSell} мёда за ${goldEarned} золота.`);
             this.saveManager?.saveGame();
+            return true; // 
         } else {
             console.log("Нет мёда для продажи.");
+            return false; 
         }
     }
-
-    //TBA
-
 }
